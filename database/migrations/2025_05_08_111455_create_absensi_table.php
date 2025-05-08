@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sekolah', function (Blueprint $table) {
+        Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('alamat');
-            $table->string('tahun_berdiri_pmr');
-            $table->string('penanggungjawab');
-            $table->string('kontak_pj');
+            $table->unsignedBigInteger('fasilitator_id');
+            $table->integer('jumlah_siswa_hadir');
+            $table->string('foto');
+            $table->string('deskripsi');
             $table->timestamps();
+
+            $table->foreign('fasilitator_id')->references('id')->on('fasilitator')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sekolah');
+        Schema::dropIfExists('absensi');
     }
 };

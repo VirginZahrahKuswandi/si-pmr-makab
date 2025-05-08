@@ -15,14 +15,16 @@ CREATE TABLE daftar_sekolah (
 );
 
 -- Membuat tabel daftar_siswa
-CREATE TABLE daftar_siswa (
+CREATE TABLE siswa (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_sekolah INT NOT NULL,
-    nisn VARCHAR(20) NOT NULL,
+    nis VARCHAR(20) NULL,
+    nisn VARCHAR(20) NULL,
     nama_lengkap VARCHAR(100) NOT NULL,
+    nama_panggilan VARCHAR(100) NULL,
     kelas VARCHAR(10) NOT NULL,
     no_telp VARCHAR(20),
-    alamat_rumah TEXT,
+    alamat TEXT,
     golongan_darah CHAR(2),
     FOREIGN KEY (id_sekolah) REFERENCES daftar_sekolah(id)
 );

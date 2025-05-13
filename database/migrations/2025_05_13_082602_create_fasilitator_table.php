@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('fasilitator', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->text('pelatihan_sertifikasi');
             $table->string('pendidikan_terakhir');
             $table->string('nomor_anggota_pmi');
             $table->string('nomor_anggota_makab');
+            $table->string('tahun_bergabung_makab');
             $table->timestamps();
         });
     }

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('foto');
             $table->string('deskripsi');
             $table->timestamps();
-
             $table->foreign('fasilitator_id')->references('id')->on('fasilitator')->onUpdate('cascade')->onDelete('cascade');
         });
     }

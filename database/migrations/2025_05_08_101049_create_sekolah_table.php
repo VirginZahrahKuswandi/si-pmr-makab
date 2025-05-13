@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('tahun_berdiri_pmr');
             $table->string('penanggungjawab');
             $table->string('kontak_pj');
+            $table->string('pembina');
+            $table->string('kontak_pembina');
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@ class FasilitatorController extends Controller
 {
     public function index()
     {
-        $fasilitators = Fasilitator::all();
+        $fasilitators = Fasilitator::paginate(10);
         return view('profil-fasilitator', compact('fasilitators'));
     }
 

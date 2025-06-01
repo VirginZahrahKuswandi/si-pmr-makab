@@ -40,6 +40,10 @@ Route::middleware('fasilitator')->group(function () {
     Route::get('/daftar-sekolah', [SekolahController::class, 'index']);
 });
 
-Route::get('/news-detail', function () {
-    return view('news-detail');
-})->name('news.index');
+Route::get('/artikel', function () {
+    return view('list-artikel');
+});
+
+Route::get('/artikel/{slug}', function ($slug) {
+    return view('detail-artikel', ['slug' => $slug]);
+})->name('artikel.detail');

@@ -8,11 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 class JadwalSekolahController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jadwal_sekolah = JadwalSekolah::with(['fasilitator', 'sekolah'])->get();
+        $query = JadwalSekolah::with(['fasilitator', 'sekolah']);
+
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal', $request->tanggal);
+        }
+
+        $jadwal_sekolah = $query->paginate(10)->withQueryString();
+
         return view('jadwal_sekolah', compact('jadwal_sekolah'));
     }
+
 
 
     public function ambil($id)

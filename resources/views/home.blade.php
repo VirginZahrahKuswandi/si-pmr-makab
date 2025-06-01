@@ -26,13 +26,6 @@
     <link href="{{ asset('template/css/aos.css') }}" rel="stylesheet">
 
     <link href="{{ asset('template/css/templatemo-nomad-force.css') }}" rel="stylesheet">
-    <!--
-
-TemplateMo 567 Nomad Force
-
-https://templatemo.com/tm-567-nomad-force
-
--->
 </head>
 
 <body>

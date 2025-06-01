@@ -11,10 +11,6 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        {{-- <li class="nav-item active">
-                            <a class="nav-link" href="/">Home</a>
-                        </li> --}}
-
                         @auth
                             @if (!is_null(Auth::user()->fasilitator_id))
                                 <li class="nav-item">
@@ -32,7 +28,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/jadwal-sekolah">Artikel</a>
+                            <a class="nav-link" href="/artikel">Artikel</a>
                         </li>
 
 

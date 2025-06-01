@@ -21,6 +21,9 @@
                     <a class="nav-link" href="/jadwal-sekolah">Jadwal Sekolah</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/artikel">Artikel</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="" target="_blank">Modul / Soal</a>
                 </li>
                 @auth

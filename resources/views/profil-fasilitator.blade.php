@@ -22,17 +22,34 @@
             margin-bottom: 10px;
         }
     </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('template/css/bootstrap-icons.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('template/css/magnific-popup.css') }}">
+
+    <link href="{{ asset('template/css/aos.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('template/css/templatemo-nomad-force.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    @include('layouts.navbar')
+    @include('layouts.navbar-template')
 
     <div class="container py-5">
         @foreach ($fasilitators as $fasilitator)
             <div class="row align-items-start">
                 <div class="col-md-4 text-center mb-4 mb-md-0">
                     <img src="{{ $fasilitator->foto ? asset('storage/' . $fasilitator->foto) : 'https://picsum.photos/300/400' }}"
-                        alt="Foto Fasilitator" class="img-fluid rounded shadow">
+                        alt="Foto Fasilitator" class="img-fluid rounded shadow mb-3"
+                        style="max-width: 300px; max-height: 400px;">
                 </div>
 
                 <div class="col-md-8">
@@ -68,9 +85,24 @@
             </div>
             <hr class="my-5" />
         @endforeach
+        <div class="d-flex justify-content-center">
+            {{ $fasilitators->links() }}
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+
+    @include('layouts.footer-template')
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="{{ asset('template/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('template/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('template/js/jquery.sticky.js') }}"></script>
+    <script src="{{ asset('template/js/aos.js') }}"></script>
+    <script src="{{ asset('template/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('template/js/magnific-popup-options.js') }}"></script>
+    <script src="{{ asset('template/js/scrollspy.min.js') }}"></script>
+    <script src="{{ asset('template/js/custom.js') }}"></script>
 </body>
 
 </html>

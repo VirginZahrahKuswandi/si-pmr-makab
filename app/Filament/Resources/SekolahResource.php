@@ -19,6 +19,8 @@ class SekolahResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Sekolah';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -44,6 +46,10 @@ class SekolahResource extends Resource
                 Forms\Components\TextInput::make('kontak_pembina')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('latitude')
+                    ->numeric(),
+                Forms\Components\TextInput::make('longitude')
+                    ->numeric(),
             ]);
     }
 
@@ -73,6 +79,12 @@ class SekolahResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('latitude')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('longitude')
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                 //

@@ -31,18 +31,19 @@
         @foreach ($fasilitators as $fasilitator)
             <div class="row align-items-start">
                 <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <img src="https://picsum.photos/300/400" alt="Foto Fasilitator" class="img-fluid rounded shadow">
+                    <img src="{{ $fasilitator->foto ? asset('storage/' . $fasilitator->foto) : 'https://picsum.photos/300/400' }}"
+                        alt="Foto Fasilitator" class="img-fluid rounded shadow">
                 </div>
 
                 <div class="col-md-8">
-                    <h3 class="section-title mb-3">{{ $fasilitator->nama }}</h3>
+                    <h3 class="section-title mb-3" style="color: #000;">{{ $fasilitator->nama }}</h3>
 
-                    <h5 class="section-title">Latar Belakang Pendidikan</h5>
+                    <h5 class="section-title" style="color: #000;">Latar Belakang Pendidikan</h5>
                     <ul>
                         <li>{{ $fasilitator->pendidikan_terakhir }}</li>
                     </ul>
 
-                    <h5 class="section-title">Pelatihan/Sertifikasi</h5>
+                    <h5 class="section-title" style="color: #000;">Pelatihan/Sertifikasi</h5>
                     <ul>
                         <li>{{ $fasilitator->pelatihan_sertifikasi }}</li>
                     </ul>

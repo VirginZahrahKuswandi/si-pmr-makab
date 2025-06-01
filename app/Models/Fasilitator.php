@@ -13,6 +13,24 @@ class Fasilitator extends Model
         'pelatihan_sertifikasi',
         'pendidikan_terakhir',
         'nomor_anggota_pmi',
-        'nomor_anggota_makab'
+        'nomor_anggota_makab',
+        'tahun_bergabung_makab',
+        'foto',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'nomor_rekening_bank_dki',
+        'alamat',
+        'telepon',
+        'npwp',
     ];
+
+    public function jadwalSekolah()
+    {
+        return $this->belongsToMany(JadwalSekolah::class, 'jadwal_fasilitator');
+    }
+
+    public function jadwal()
+    {
+        return $this->belongsToMany(JadwalSekolah::class, 'jadwal_fasilitator');
+    }
 }

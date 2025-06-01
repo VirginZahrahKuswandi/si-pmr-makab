@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('absensi_id');
             $table->unsignedBigInteger('fasilitator_id');
+            $table->enum('status', ['belum_absen', 'sudah_absen'])->default('belum_absen');
+            $table->enum('status_verifikasi', ['pending', 'disetujui', 'ditolak'])->default('pending');
+            $table->timestamps();
 
             $table->foreign('absensi_id')->references('id')->on('absensi')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('fasilitator_id')->references('id')->on('fasilitator')->onUpdate('cascade')->onDelete('cascade');

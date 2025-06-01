@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absensi', function (Blueprint $table) {
+        Schema::create('jadwal_fasilitator', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fasilitator_id');
-            $table->integer('jumlah_siswa_hadir');
-            $table->string('foto');
-            $table->string('deskripsi');
+            $table->foreignId('jadwal_sekolah_id')->constrained('jadwal_sekolah')->onDelete('cascade');
+            $table->foreignId('fasilitator_id')->constrained('fasilitator')->onDelete('cascade');
             $table->timestamps();
-            $table->foreign('fasilitator_id')->references('id')->on('fasilitator')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absensi');
+        Schema::dropIfExists('jadwal_fasilitator');
     }
 };

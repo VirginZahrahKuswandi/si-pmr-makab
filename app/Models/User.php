@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'fasilitator_id',
+        'is_admin',
     ];
 
     /**
@@ -44,5 +46,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function fasilitator()
+    {
+        return $this->belongsTo(Fasilitator::class);
+    }
+
+    public function jadwalSekolah()
+    {
+        return $this->belongsToMany(JadwalSekolah::class, 'fasilitator_jadwal');
     }
 }

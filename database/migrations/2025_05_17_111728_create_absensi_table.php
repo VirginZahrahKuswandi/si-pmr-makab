@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_fasilitator', function (Blueprint $table) {
+        Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('fasilitator_id');
-            $table->string('lokasi');
-            $table->time('jam_mulai');
-            $table->time('jam_selesai');
+            $table->foreignId('jadwal_sekolah_id');
+            $table->integer('jumlah_siswa_hadir');
             $table->string('deskripsi');
+            $table->enum('status', ['pending', 'acc', 'tolak'])->default('pending');
             $table->timestamps();
 
-            $table->foreign('fasilitator_id')->references('id')->on('fasilitator')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('jadwal_sekolah_id')->references('id')->on('jadwal_sekolah')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwal_fasilitator');
+        Schema::dropIfExists('absensi');
     }
 };

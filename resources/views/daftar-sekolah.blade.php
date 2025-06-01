@@ -79,12 +79,13 @@
                 </tbody>
 
             </table>
+            <p class="text-muted">Menampilkan 10 siswa pertama (belum difilter berdasarkan sekolah).</p>
+
         </div>
 
         <div>
             <h5 class="mb-3">Lokasi Sekolah</h5>
-            <p>Jl. Sirsak No.34 8, RT.8/RW.7, Jagakarsa, Kec. Jagakarsa, Kota Jakarta Selatan, Daerah Khusus Ibukota
-                Jakarta 12620</p>
+            <p id="alamat-sekolah">Pilih sekolah untuk melihat alamat</p>
             <div id="map" class="shadow"></div>
         </div>
     </div>
@@ -94,22 +95,37 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <script>
-        var map = L.map('map').setView([-6.3348418, 106.8211323], 18);
+        // Data sekolah dari backend
+        const sekolahs = @json($sekolahs);
+        // Inisialisasi map
+        var map = L.map('map').setView([-6.3348418, 106.8211323], 16);
+        var marker = null;
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
 
-        var marker = L.marker([-6.334736, 106.8212711]).addTo(map).bindPopup(`
-  <b>Nama Sekolah</b>
-  <br>
-  <a href="https://maps.app.goo.gl/BdbWvjdvJtMSeTQQ8" target="_blank">Buka di gmap</a>
-  `)
-    </script>
+        function updateMap(sekolahId) {
+            const sekolah = sekolahs.find(s => s.id == sekolahId);
+            if (!sekolah || !sekolah.latitude || !sekolah.longitude) {
+                document.getElementById('alamat-sekolah').textContent = 'Pilih sekolah untuk melihat alamat';
+                if (marker) map.removeLayer(marker);
+                return;
+            }
+            // Update alamat
+            document.getElementById('alamat-sekolah').textContent = sekolah.alamat;
+            // Update marker
+            if (marker) map.removeLayer(marker);
+            marker = L.marker([sekolah.latitude, sekolah.longitude]).addTo(map).bindPopup(`
+                <b>${sekolah.nama}</b><br>
+                <a href="https://maps.google.com/?q=${sekolah.latitude},${sekolah.longitude}" target="_blank">Buka di Google Maps</a>
+            `);
+            map.setView([sekolah.latitude, sekolah.longitude], 17);
+        }
 
-    <script>
         document.getElementById('select-sekolah').addEventListener('change', function() {
             const idSekolah = this.value;
+            updateMap(idSekolah);
             const tbody = document.getElementById('siswa-body');
             tbody.innerHTML = '<tr><td colspan="9" class="text-center">Loading...</td></tr>';
 
@@ -149,6 +165,11 @@
                     tbody.innerHTML = '<tr><td colspan="9" class="text-center">Gagal memuat data</td></tr>';
                 });
         });
+
+        // Set default map/alamat jika ada sekolah pertama
+        if (sekolahs.length > 0) {
+            updateMap(document.getElementById('select-sekolah').value);
+        }
     </script>
 
 </body>

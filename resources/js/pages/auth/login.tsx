@@ -32,11 +32,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         e.preventDefault();
         post(route('login'), {
             onFinish: () => reset('password'),
+            onSuccess: () => (window.location.href = '/'),
         });
     };
 
     return (
-        <AuthLayout title="hello world" description="Enter your email and password below to log in">
+        <AuthLayout title="MAKAB" description="">
             <Head title="Log in" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -58,14 +59,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     </div>
 
                     <div className="grid gap-2">
-                        <div className="flex items-center">
+                        {/* <div className="flex items-center">
                             <Label htmlFor="password">Password</Label>
                             {canResetPassword && (
                                 <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
                                     Forgot password?
                                 </TextLink>
                             )}
-                        </div>
+                        </div> */}
                         <Input
                             id="password"
                             type="password"

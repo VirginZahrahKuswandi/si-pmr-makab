@@ -19,6 +19,12 @@ return new class extends Migration
             $table->string('nomor_anggota_pmi');
             $table->string('nomor_anggota_makab');
             $table->string('tahun_bergabung_makab');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->string('nomor_rekening_bank_dki')->nullable();
+            $table->string('alamat');
+            $table->string('telepon');
+            $table->string('npwp');
             $table->timestamps();
         });
     }

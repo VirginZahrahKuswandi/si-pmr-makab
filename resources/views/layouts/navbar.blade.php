@@ -23,14 +23,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/artikel">Artikel</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="" target="_blank">Modul / Soal</a>
-                </li>
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            {{ Auth::user()->name }}
+                            <i class="fa-solid fa-user"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/profil">Profil</a></li>

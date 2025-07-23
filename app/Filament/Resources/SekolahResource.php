@@ -19,7 +19,9 @@ class SekolahResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Sekolah';
+    protected static ?string $navigationLabel = "Sekolah";
+    protected static ?string $pluralModelLabel = "Sekolah";
+    protected static ?string $slug = "sekolah";
 
     public static function form(Form $form): Form
     {

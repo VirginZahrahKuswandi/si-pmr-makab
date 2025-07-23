@@ -22,7 +22,9 @@ class JadwalSekolahResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Jadwal Sekolah';
+    protected static ?string $navigationLabel = "Jadwal Sekolah";
+    protected static ?string $pluralModelLabel = "Jadwal Sekolah";
+    protected static ?string $slug = "jadwal-sekolah";
 
     public static function form(Form $form): Form
     {
@@ -33,10 +35,21 @@ class JadwalSekolahResource extends Resource
                     ->relationship('sekolah', 'nama')
                     ->searchable()
                     ->required(),
-                Forms\Components\TextInput::make('fasilitator_id')
-                    ->numeric(),
+                Forms\Components\Select::make('fasilitator_id')
+                    ->label('Fasilitator')
+                    ->relationship('fasilitator', 'nama')
+                    ->multiple()
+                    ->searchable()
+                    ->required()
+                    ->reactive()
+                    ->afterStateHydrated(function ($component, $state) {})
+                    ->dehydrateStateUsing(fn($state) => $state),
                 Forms\Components\DatePicker::make('tanggal')
-                    ->required(),
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('fasilitator_id', []);
+                    }),
                 Forms\Components\TextInput::make('jam_mulai')
                     ->required(),
                 Forms\Components\TextInput::make('jam_selesai')

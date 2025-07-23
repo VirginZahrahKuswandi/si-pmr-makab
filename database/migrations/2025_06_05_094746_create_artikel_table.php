@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('gambar')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->string('kategori')->nullable();
             $table->timestamps();

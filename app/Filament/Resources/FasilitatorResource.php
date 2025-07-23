@@ -19,7 +19,9 @@ class FasilitatorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Fasilitator';
+    protected static ?string $navigationLabel = "Fasilitator";
+    protected static ?string $pluralModelLabel = "Fasilitator";
+    protected static ?string $slug = 'fasilitator';
 
     public static function form(Form $form): Form
     {

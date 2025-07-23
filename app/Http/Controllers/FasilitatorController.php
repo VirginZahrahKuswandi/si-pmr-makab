@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Fasilitator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Artikel;
 
 class FasilitatorController extends Controller
 {
@@ -34,7 +35,8 @@ class FasilitatorController extends Controller
     public function profil()
     {
         $user = Auth::user();
+        $artikels = Artikel::where('user_id', $user->id)->latest()->get();
 
-        return view('profil', compact('user'));
+        return view('profil', compact('user', 'artikels'));
     }
 }

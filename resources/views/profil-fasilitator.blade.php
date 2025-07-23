@@ -23,6 +23,9 @@
         }
     </style>
 
+    <script src="https://kit.fontawesome.com/22453fa8c0.js" crossorigin="anonymous"></script>
+
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,10 +93,10 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 
     @include('layouts.footer-template')
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JAVASCRIPT FILES -->
     <script src="{{ asset('template/js/jquery.min.js') }}"></script>
     <script src="{{ asset('template/js/bootstrap.bundle.min.js') }}"></script>

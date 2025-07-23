@@ -19,7 +19,9 @@ class AbsensiFasilitatorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'Absensi Fasilitator';
+    protected static ?string $navigationLabel = "Absensi Fasilitator";
+    protected static ?string $pluralModelLabel = "Absensi Fasilitator";
+    protected static ?string $slug = 'absensi-fasilitator';
 
     public static function form(Form $form): Form
     {

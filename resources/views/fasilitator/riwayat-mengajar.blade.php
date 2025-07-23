@@ -5,12 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SI MAKAB</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
+        rel="stylesheet">
+    <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('template/css/bootstrap-icons.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('template/css/magnific-popup.css') }}">
+    <link href="{{ asset('template/css/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('template/css/templatemo-nomad-force.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    @include('layouts.navbar')
+    @include('layouts.navbar-template')
 
     <div class="container py-5">
         <h2 class="mb-4">Riwayat Mengajar</h2>
@@ -19,92 +28,94 @@
             $fasilitatorId = Auth::user()->fasilitator_id;
         @endphp
 
-        <table class="table table-bordered">
-            <thead class="table-light">
-                <tr>
-                    <th>Nama Sekolah</th>
-                    <th>Tanggal</th>
-                    <th>Jam Mulai</th>
-                    <th>Jam Selesai</th>
-                    <th>Fasilitator</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                    <th>Foto Dokumentasi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($jadwal as $item)
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
                     <tr>
-                        <td>{{ $item->sekolah->nama ?? '-' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}</td>
-                        <td>
-                            <ul class="mb-0">
-                                @foreach ($item->fasilitator as $f)
-                                    <li>{{ $f->nama }}</li>
-                                @endforeach
-                            </ul>
-                        </td>
-
-                        <td>
-                            @php
-                                // Ambil absensi yang sudah dilakukan oleh fasilitator yang sedang login
-                                $absensiFasilitator = null;
-                                $fotoList = [];
-                                foreach ($item->absensi as $absensi) {
-                                    $pivot = $absensi->fasilitator->firstWhere('id', $fasilitatorId)?->pivot;
-                                    if ($pivot) {
-                                        $absensiFasilitator = $pivot;
-                                        foreach ($absensi->foto as $foto) {
-                                            $fotoList[] = asset('storage/' . $foto->path);
-                                        }
-                                        break;
-                                    }
-                                }
-                            @endphp
-
-                            @if ($absensiFasilitator)
-                                <span
-                                    class="badge bg-{{ $absensiFasilitator->status_verifikasi === 'disetujui'
-                                        ? 'success'
-                                        : ($absensiFasilitator->status_verifikasi === 'ditolak'
-                                            ? 'danger'
-                                            : 'warning') }}">
-                                    {{ ucfirst($absensiFasilitator->status_verifikasi) }}
-                                </span>
-                            @else
-                                <span class="badge bg-secondary">Belum absen</span>
-                            @endif
-                        </td>
-
-                        <td>
-                            @if ($absensiFasilitator)
-                                <button class="btn btn-sm btn-secondary" disabled>Sudah Absen</button>
-                            @else
-                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#absensiModal{{ $item->id }}">
-                                    Absen
-                                </button>
-                            @endif
-                        </td>
-                        <td>
-                            @if (count($fotoList))
-                                @foreach ($fotoList as $index => $fotoSrc)
-                                    <button type="button"
-                                        onclick="showFotoModal({{ $item->id }}, {{ $index }})"
-                                        class="text-primary text-decoration-underline btn btn-link p-0">
-                                        dokumentasi-{{ $index + 1 }}
-                                    </button>
-                                @endforeach
-                            @else
-                                <span class="text-muted fst-italic">Tidak ada foto</span>
-                            @endif
-                        </td>
+                        <th>Nama Sekolah</th>
+                        <th>Tanggal</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                        <th>Fasilitator</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                        <th>Foto Dokumentasi</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($jadwal as $item)
+                        <tr>
+                            <td>{{ $item->sekolah->nama ?? '-' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}</td>
+                            <td>
+                                <ul class="mb-0">
+                                    @foreach ($item->fasilitator as $f)
+                                        <li>{{ $f->nama }}</li>
+                                    @endforeach
+                                </ul>
+                            </td>
+
+                            <td>
+                                @php
+                                    // Ambil absensi yang sudah dilakukan oleh fasilitator yang sedang login
+                                    $absensiFasilitator = null;
+                                    $fotoList = [];
+                                    foreach ($item->absensi as $absensi) {
+                                        $pivot = $absensi->fasilitator->firstWhere('id', $fasilitatorId)?->pivot;
+                                        if ($pivot) {
+                                            $absensiFasilitator = $pivot;
+                                            foreach ($absensi->foto as $foto) {
+                                                $fotoList[] = asset('storage/' . $foto->path);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                @endphp
+
+                                @if ($absensiFasilitator)
+                                    <span
+                                        class="badge bg-{{ $absensiFasilitator->status_verifikasi === 'disetujui'
+                                            ? 'success'
+                                            : ($absensiFasilitator->status_verifikasi === 'ditolak'
+                                                ? 'danger'
+                                                : 'warning') }}">
+                                        {{ ucfirst($absensiFasilitator->status_verifikasi) }}
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary">Belum absen</span>
+                                @endif
+                            </td>
+
+                            <td>
+                                @if ($absensiFasilitator)
+                                    <button class="btn btn-sm btn-secondary" disabled>Sudah Absen</button>
+                                @else
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#absensiModal{{ $item->id }}">
+                                        Absen
+                                    </button>
+                                @endif
+                            </td>
+                            <td>
+                                @if (count($fotoList))
+                                    @foreach ($fotoList as $index => $fotoSrc)
+                                        <button type="button"
+                                            onclick="showFotoModal({{ $item->id }}, {{ $index }})"
+                                            class="text-primary text-decoration-underline btn btn-link p-0">
+                                            dokumentasi-{{ $index + 1 }}
+                                        </button>
+                                    @endforeach
+                                @else
+                                    <span class="text-muted fst-italic">Tidak ada foto</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         @foreach ($jadwal as $item)
             <div class="modal fade" id="absensiModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
@@ -217,16 +228,16 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @include('layouts.footer-template')
+
+    <script src="{{ asset('template/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('template/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('template/js/jquery.sticky.js') }}"></script>
+    <script src="{{ asset('template/js/aos.js') }}"></script>
+    <script src="{{ asset('template/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('template/js/magnific-popup-options.js') }}"></script>
+    <script src="{{ asset('template/js/scrollspy.min.js') }}"></script>
+    <script src="{{ asset('template/js/custom.js') }}"></script>
 </body>
 
 </html>

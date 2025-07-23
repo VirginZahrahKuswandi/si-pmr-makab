@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daftar Sekolah</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
@@ -29,21 +28,17 @@
             vertical-align: middle;
         }
     </style>
+    <script src="https://kit.fontawesome.com/22453fa8c0.js" crossorigin="anonymous"></script>
 
+    <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
         rel="stylesheet">
-
     <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('template/css/bootstrap-icons.css') }}" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ asset('template/css/magnific-popup.css') }}">
-
     <link href="{{ asset('template/css/aos.css') }}" rel="stylesheet">
-
     <link href="{{ asset('template/css/templatemo-nomad-force.css') }}" rel="stylesheet">
 </head>
 
@@ -108,7 +103,6 @@
 
     @include('layouts.footer-template')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
@@ -190,6 +184,7 @@
         }
     </script>
 
+    <!-- JAVASCRIPT FILES -->
     <script src="{{ asset('template/js/jquery.min.js') }}"></script>
     <script src="{{ asset('template/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('template/js/jquery.sticky.js') }}"></script>

@@ -28,4 +28,18 @@ class Artikel extends Model
     {
         return 'slug';
     }
+
+    public function fotos()
+    {
+        return $this->hasMany(ArtikelFoto::class);
+    }
+
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class)->whereNull('parent_id')->latest()->with('anakKomentar', 'user');
+    }
 }

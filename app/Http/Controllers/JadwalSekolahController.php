@@ -21,8 +21,6 @@ class JadwalSekolahController extends Controller
         return view('jadwal_sekolah', compact('jadwal_sekolah'));
     }
 
-
-
     public function ambil($id)
     {
         $jadwal = JadwalSekolah::findOrFail($id);
@@ -42,5 +40,19 @@ class JadwalSekolahController extends Controller
         $jadwal->fasilitator()->attach($fasilitatorId);
 
         return redirect()->route('jadwal.index')->with('success', 'Anda telah mengambil jadwal ini.');
+    }
+
+    public function batal($id)
+    {
+        $jadwal = JadwalSekolah::findOrFail($id);
+        $fasilitatorId = auth()->user()->fasilitator_id;
+
+        if (!$fasilitatorId) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki fasilitator ID.');
+        }
+
+        $jadwal->fasilitator()->detach($fasilitatorId);
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dibatalkan.');
     }
 }

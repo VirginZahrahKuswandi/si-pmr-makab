@@ -59,7 +59,6 @@
 
                             <td>
                                 @php
-                                    // Ambil absensi yang sudah dilakukan oleh fasilitator yang sedang login
                                     $absensiFasilitator = null;
                                     $fotoList = [];
                                     foreach ($item->absensi as $absensi) {
@@ -83,6 +82,22 @@
                                                 : 'warning') }}">
                                         {{ ucfirst($absensiFasilitator->status_verifikasi) }}
                                     </span>
+                                    <br>
+                                    <small class="text-muted">
+                                        @if ($absensiFasilitator->waktu_absen && $absensiFasilitator->updated_at)
+                                            Diajukan:
+                                            {{ \Carbon\Carbon::parse($absensiFasilitator->waktu_absen)->diffForHumans() }}<br>
+                                            @if ($absensiFasilitator->updated_at != $absensiFasilitator->waktu_absen)
+                                                Diupdate:
+                                                {{ \Carbon\Carbon::parse($absensiFasilitator->updated_at)->diffForHumans() }}
+                                            @endif
+                                        @endif
+
+                                        @if ($absensiFasilitator && $absensiFasilitator->keterangan)
+                                            <br>
+                                            Keterangan: {{ $absensiFasilitator->keterangan }}
+                                        @endif
+                                    </small>
                                 @else
                                     <span class="badge bg-secondary">Belum absen</span>
                                 @endif
@@ -90,22 +105,56 @@
 
                             <td>
                                 @if ($absensiFasilitator)
-                                    <button class="btn btn-sm btn-secondary" disabled>Sudah Absen</button>
+                                    @if ($absensiFasilitator->status_verifikasi === 'ditolak')
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#absensiModal{{ $item->id }}">
+                                            Edit
+                                        </button>
+                                    @else
+                                        <button class="btn btn-sm btn-secondary" disabled>Sudah Absen</button>
+                                    @endif
                                 @else
                                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#absensiModal{{ $item->id }}">
                                         Absen
                                     </button>
                                 @endif
+
                             </td>
                             <td>
                                 @if (count($fotoList))
-                                    @foreach ($fotoList as $index => $fotoSrc)
-                                        <button type="button"
-                                            onclick="showFotoModal({{ $item->id }}, {{ $index }})"
-                                            class="text-primary text-decoration-underline btn btn-link p-0">
-                                            dokumentasi-{{ $index + 1 }}
-                                        </button>
+                                    @foreach ($item->absensi as $absensi)
+                                        @php
+                                            $pivot = $absensi->fasilitator->firstWhere('id', $fasilitatorId)?->pivot;
+                                        @endphp
+                                        @if ($pivot)
+                                            @foreach ($absensi->foto as $foto)
+                                                @php
+                                                    switch ($foto->jenis_absensi_foto_id) {
+                                                        case 1:
+                                                            $label = 'Fasilitator Mengajar';
+                                                            break;
+                                                        case 2:
+                                                            $label = 'Anggota Praktik';
+                                                            break;
+                                                        case 3:
+                                                            $label = 'Foto Bersama';
+                                                            break;
+                                                        default:
+                                                            $label = 'Dokumentasi-' . $foto->jenis_absensi_foto_id;
+                                                    }
+                                                @endphp
+                                                <button type="button"
+                                                    onclick="showFotoModal({{ $item->id }}, {{ $loop->index }})"
+                                                    class="text-primary text-decoration-underline btn btn-link p-0"
+                                                    style="text-align: left">
+                                                    {{ $label }}
+                                                </button>
+                                                @if (!$loop->last)
+                                                    <br>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     @endforeach
                                 @else
                                     <span class="text-muted fst-italic">Tidak ada foto</span>
@@ -118,9 +167,21 @@
         </div>
 
         @foreach ($jadwal as $item)
+            @php
+                // Ambil data absensi yang sudah ada (jika ada)
+                $absensiData = $item->absensi->first(); // diasumsikan satu absensi per jadwal
+            @endphp
+
             <div class="modal fade" id="absensiModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <form action="{{ route('absensi.store') }}" method="POST" enctype="multipart/form-data">
+                    <form
+                        action="{{ $absensiData ? route('absensi.update', $absensiData->id) : route('absensi.store') }}"
+                        method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @if ($absensiData)
+                            @method('PUT')
+                        @endif
+
                         @csrf
                         <input type="hidden" name="jadwal_sekolah_id" value="{{ $item->id }}">
                         <div class="modal-content">
@@ -131,16 +192,71 @@
 
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label>Jumlah Siswa Hadir</label>
-                                    <input type="number" name="jumlah_siswa_hadir" class="form-control" required>
+                                    <label class="mb-1">Jumlah Siswa Hadir</label>
+                                    <input type="number" name="jumlah_siswa_hadir" class="form-control"
+                                        value="{{ old('jumlah_siswa_hadir', $absensiData->jumlah_siswa_hadir ?? '') }}"
+                                        required>
                                 </div>
+
                                 <div class="mb-3">
-                                    <label>Deskripsi</label>
-                                    <textarea name="deskripsi" class="form-control" required></textarea>
+                                    <label class="mb-1">Deskripsi</label>
+                                    <textarea name="deskripsi" class="form-control" required>{{ old('deskripsi', $absensiData->deskripsi ?? '') }}</textarea>
                                 </div>
+
                                 <div class="mb-3">
-                                    <label>Foto Dokumentasi</label>
-                                    <input type="file" name="foto[]" class="form-control" multiple required>
+                                    <label class="mb-1">Materi</label>
+                                    <input type="text" name="materi" class="form-control"
+                                        value="{{ old('materi', $absensiData->materi ?? '') }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="mb-1">Tugas Berikutnya</label>
+                                    <input type="text" name="tugas_berikutnya" class="form-control"
+                                        value="{{ old('tugas_berikutnya', $absensiData->tugas_berikutnya ?? '') }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="mb-1">Lokasi</label>
+                                    <input type="text" name="lokasi" class="form-control"
+                                        value="{{ old('lokasi', $absensiData->lokasi ?? '') }}">
+                                </div>
+
+                                {{-- Dokumentasi fasilitator mengajar --}}
+                                <div class="mb-3">
+                                    <label for="fasilitator_mengajar" class="mb-1">Dokumentasi Fasilitator Sedang
+                                        Mengajar</label>
+
+                                    <input type="file" name="fasilitator_mengajar" class="form-control"
+                                        id="fasilitator_mengajar" @if (!$absensiData) required @endif>
+
+                                    @if ($absensiData)
+                                        <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
+                                    @endif
+                                </div>
+
+                                {{-- Dokumentasi anggota praktik --}}
+                                <div class="mb-3">
+                                    <label for="anggota_praktik" class="mb-1">Dokumentasi Anggota Sedang
+                                        Teori/Praktik</label>
+
+                                    <input type="file" name="anggota_praktik" class="form-control"
+                                        id="anggota_praktik" @if (!$absensiData) required @endif>
+
+                                    @if ($absensiData)
+                                        <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
+                                    @endif
+                                </div>
+
+                                {{-- Dokumentasi foto bersama --}}
+                                <div class="mb-3">
+                                    <label for="foto_bersama" class="mb-1">Dokumentasi Foto Bersama</label>
+
+                                    <input type="file" name="foto_bersama" class="form-control" id="foto_bersama"
+                                        @if (!$absensiData) required @endif>
+
+                                    @if ($absensiData)
+                                        <small class="text-muted">Kosongkan jika tidak ingin mengganti foto.</small>
+                                    @endif
                                 </div>
                             </div>
 
@@ -153,6 +269,7 @@
             </div>
         @endforeach
 
+
         <!-- Modal Preview Foto -->
         <div id="fotoModal" class="modal fade" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -163,8 +280,8 @@
                     </div>
                     <div class="modal-body text-center">
                         <button id="prevFotoBtn" onclick="prevFoto()" class="btn btn-light me-2">&lt;</button>
-                        <img id="fotoModalImg" src="" alt="Dokumentasi Absensi" class="img-fluid rounded shadow"
-                            style="max-height:70vh;" />
+                        <img id="fotoModalImg" src="" alt="Dokumentasi Absensi"
+                            class="img-fluid rounded shadow" style="max-height:70vh;" />
                         <button id="nextFotoBtn" onclick="nextFoto()" class="btn btn-light ms-2">&gt;</button>
                         <div id="fotoModalCaption" class="mt-2 text-muted"></div>
                     </div>
@@ -173,7 +290,6 @@
         </div>
 
         <script>
-            // Kumpulan foto per jadwal
             const fotoMap = {};
             @foreach ($jadwal as $item)
                 @php

@@ -10,7 +10,14 @@ class JadwalSekolahController extends Controller
 {
     public function index(Request $request)
     {
-        $query = JadwalSekolah::with(['fasilitator', 'sekolah']);
+        $fasilitatorId = Auth::check() ? Auth::user()->fasilitator_id : null;
+        $query = JadwalSekolah::with(['fasilitator', 'sekolah'])
+            ->withCount(['fasilitator as diambil' => function ($q) use ($fasilitatorId) {
+                if ($fasilitatorId) {
+                    $q->where('fasilitator_id', $fasilitatorId);
+                }
+            }])
+            ->orderByDesc('diambil');
 
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal', $request->tanggal);

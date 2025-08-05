@@ -37,6 +37,7 @@ Route::get('/profil', [FasilitatorController::class, 'profil'])->middleware('aut
 
 
 Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
+Route::put('/absensi/{id}', [AbsensiController::class, 'update'])->name('absensi.update');
 
 Route::middleware(['auth', IsAdmin::class])->group(function () {});
 

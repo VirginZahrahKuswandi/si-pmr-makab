@@ -13,16 +13,18 @@ class AbsensiFasilitator extends Model
         'fasilitator_id',
         'status',
         'status_verifikasi',
+        'keterangan',
+        'waktu_absen',
     ];
 
-
-    public function absensi()
-    {
-        return $this->belongsTo(Absensi::class);
-    }
 
     public function fasilitator()
     {
         return $this->belongsTo(Fasilitator::class);
+    }
+
+    public function absensi()
+    {
+        return $this->belongsTo(Absensi::class);
     }
 }

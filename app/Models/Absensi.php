@@ -13,6 +13,9 @@ class Absensi extends Model
         'jadwal_sekolah_id',
         'jumlah_siswa_hadir',
         'deskripsi',
+        'materi',
+        'tugas_berikutnya',
+        'lokasi',
     ];
 
     public function jadwal()
@@ -28,7 +31,12 @@ class Absensi extends Model
     public function fasilitator()
     {
         return $this->belongsToMany(Fasilitator::class, 'absensi_fasilitator')
-            ->withPivot('status', 'status_verifikasi')
+            ->withPivot(['status', 'status_verifikasi', 'keterangan', 'waktu_absen'])
             ->withTimestamps();
+    }
+
+    public function jadwalSekolah()
+    {
+        return $this->belongsTo(JadwalSekolah::class, 'jadwal_sekolah_id');
     }
 }

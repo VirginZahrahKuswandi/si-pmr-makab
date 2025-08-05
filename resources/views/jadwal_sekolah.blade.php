@@ -55,7 +55,11 @@
                         <th>Jam Selesai</th>
                         <th>Status</th>
                         <th>Fasilitator</th>
-                        <th>Aksi</th>
+                        @auth
+                            @if (!is_null(Auth::user()->fasilitator_id))
+                                <th>Aksi</th>
+                            @endif
+                        @endauth
                     </tr>
                 </thead>
                 <tbody>
@@ -83,54 +87,59 @@
                                     <span class="text-muted">Belum diisi</span>
                                 @endif
                             </td>
-                            <td>
-                                @php
-                                    $sudahAmbil = false;
-                                    if (auth()->check()) {
-                                        $sudahAmbil = $item->fasilitator->contains(
-                                            'id',
-                                            auth()->user()->fasilitator_id,
-                                        );
-                                    }
-                                @endphp
-
-                                <div class="d-flex flex-column gap-1">
-                                    <!-- Tombol Detail -->
-                                    <button type="button" class="btn btn-secondary btn-sm w-100 mb-1"
-                                        data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}">
-                                        Detail
-                                    </button>
-
-                                    @if (auth()->check())
+                            @auth
+                                @if (!is_null(Auth::user()->fasilitator_id))
+                                    <td>
                                         @php
-                                            $fasilitatorId = auth()->user()->fasilitator_id;
-                                            $sudahAmbil = $fasilitatorId
-                                                ? $item->fasilitator->contains('id', $fasilitatorId)
-                                                : false;
+                                            $sudahAmbil = false;
+                                            if (auth()->check()) {
+                                                $sudahAmbil = $item->fasilitator->contains(
+                                                    'id',
+                                                    auth()->user()->fasilitator_id,
+                                                );
+                                            }
                                         @endphp
 
-                                        @if (!$fasilitatorId)
-                                        @elseif (!$sudahAmbil)
-                                            <form method="POST" action="{{ route('jadwal.ambil', $item->id) }}"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin mengambil jadwal ini?');">
-                                                @csrf
-                                                <button type="submit" class="btn btn-primary btn-sm w-100 mb-1">Saya
-                                                    Bersedia</button>
-                                            </form>
-                                        @else
-                                            <span class="badge bg-success w-100 mb-1 text-center"
-                                                style="font-size: 0.9em;">Anda sudah mengambil</span>
-                                            <form method="POST" action="{{ route('jadwal.batal', $item->id) }}"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin membatalkan jadwal ini?');">
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm w-100">
-                                                    Batalkan Jadwal
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @endif
-                                </div>
-                            </td>
+                                        <div class="d-flex flex-column gap-1">
+                                            <!-- Tombol Detail -->
+                                            <button type="button" class="btn btn-secondary btn-sm w-100 mb-1"
+                                                data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id }}">
+                                                Detail
+                                            </button>
+
+                                            @if (auth()->check())
+                                                @php
+                                                    $fasilitatorId = auth()->user()->fasilitator_id;
+                                                    $sudahAmbil = $fasilitatorId
+                                                        ? $item->fasilitator->contains('id', $fasilitatorId)
+                                                        : false;
+                                                @endphp
+
+                                                @if (!$fasilitatorId)
+                                                @elseif (!$sudahAmbil)
+                                                    <form method="POST" action="{{ route('jadwal.ambil', $item->id) }}"
+                                                        onsubmit="return confirm('Apakah Anda yakin ingin mengambil jadwal ini?');">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="btn btn-primary btn-sm w-100 mb-1">Saya
+                                                            Bersedia</button>
+                                                    </form>
+                                                @else
+                                                    <span class="badge bg-success w-100 mb-1 text-center"
+                                                        style="font-size: 0.9em;">Anda sudah mengambil</span>
+                                                    <form method="POST" action="{{ route('jadwal.batal', $item->id) }}"
+                                                        onsubmit="return confirm('Apakah Anda yakin ingin membatalkan jadwal ini?');">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger btn-sm w-100">
+                                                            Batalkan Jadwal
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </td>
+                                @endif
+                            @endauth
 
                             </td>
                         </tr>

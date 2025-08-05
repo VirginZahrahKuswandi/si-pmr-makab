@@ -2,48 +2,27 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profil Fasilitator</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .section-title {
-            color: #0d6efd;
-            font-weight: bold;
-        }
-
-        .section-title::after {
-            content: "";
-            display: block;
-            width: 40px;
-            height: 3px;
-            background-color: #f4661b;
-            margin-top: 4px;
-            margin-bottom: 10px;
-        }
-    </style>
-
-    <script src="https://kit.fontawesome.com/22453fa8c0.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jadwal Sekolah</title>
 
 
+    <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&display=swap"
         rel="stylesheet">
-
     <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('template/css/bootstrap-icons.css') }}" rel="stylesheet">
-
     <link rel="stylesheet" href="{{ asset('template/css/magnific-popup.css') }}">
-
     <link href="{{ asset('template/css/aos.css') }}" rel="stylesheet">
-
     <link href="{{ asset('template/css/templatemo-nomad-force.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/22453fa8c0.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
+
     @include('layouts.navbar-template')
 
     <div class="container py-5">
@@ -93,10 +72,8 @@
         </div>
     </div>
 
-
     @include('layouts.footer-template')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JAVASCRIPT FILES -->
     <script src="{{ asset('template/js/jquery.min.js') }}"></script>
     <script src="{{ asset('template/js/bootstrap.bundle.min.js') }}"></script>

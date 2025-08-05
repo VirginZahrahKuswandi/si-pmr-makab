@@ -40,7 +40,6 @@ class JadwalSekolahResource extends Resource
                     ->relationship('fasilitator', 'nama')
                     ->multiple()
                     ->searchable()
-                    ->required()
                     ->reactive()
                     ->afterStateHydrated(function ($component, $state) {})
                     ->dehydrateStateUsing(fn($state) => $state),

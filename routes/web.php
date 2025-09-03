@@ -10,7 +10,7 @@ use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KomentarController;
-
+use App\Http\Middleware\FasilitatorMiddleware;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -33,7 +33,7 @@ Route::post('/jadwal-sekolah/{id}/batal', [JadwalSekolahController::class, 'bata
 
 Route::get('/riwayat-mengajar', [FasilitatorController::class, 'riwayatMengajar'])->middleware('auth');
 
-Route::get('/profil', [FasilitatorController::class, 'profil'])->middleware('auth')->name('profil');
+Route::get('/profil', [FasilitatorController::class, 'profil'])->middleware(['auth', 'fasilitator'])->name('profil');
 
 
 Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
@@ -59,3 +59,7 @@ Route::middleware('auth')->group(function () {
 Route::delete('/artikel/foto/{id}', [ArtikelController::class, 'deleteFoto'])->name('artikel.foto.destroy');
 
 Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+
+Route::post('/jadwal/request', [JadwalSekolahController::class, 'requestJadwal'])
+    ->middleware('auth')
+    ->name('jadwal.request');

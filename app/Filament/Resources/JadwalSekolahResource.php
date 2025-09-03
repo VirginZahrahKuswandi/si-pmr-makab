@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TagsColumn;
-
+use Filament\Forms\Components\TimePicker;
 
 class JadwalSekolahResource extends Resource
 {
@@ -30,7 +30,7 @@ class JadwalSekolahResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('id_sekolah')
+                Forms\Components\Select::make('sekolah_id')
                     ->label('Sekolah')
                     ->relationship('sekolah', 'nama')
                     ->searchable()
@@ -49,9 +49,15 @@ class JadwalSekolahResource extends Resource
                     ->afterStateUpdated(function ($state, callable $set) {
                         $set('fasilitator_id', []);
                     }),
-                Forms\Components\TextInput::make('jam_mulai')
+                Forms\Components\TimePicker::make('jam_mulai')
+                    ->seconds(false)
+                    ->format('H:i')
+                    ->displayFormat('H:i')
                     ->required(),
-                Forms\Components\TextInput::make('jam_selesai')
+                Forms\Components\TimePicker::make('jam_selesai')
+                    ->seconds(false)
+                    ->format('H:i')
+                    ->displayFormat('H:i')
                     ->required(),
                 Forms\Components\TextInput::make('deskripsi')
                     ->maxLength(255),
@@ -67,6 +73,16 @@ class JadwalSekolahResource extends Resource
                 Forms\Components\TextInput::make('kontak_pembina')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ])
+                    ->required(),
+
+                Forms\Components\Textarea::make('catatan')
+                    ->label('Catatan Admin'),
             ]);
     }
 
@@ -105,6 +121,18 @@ class JadwalSekolahResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'approved',
+                        'danger' => 'rejected',
+                    ])
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('creator.name')
+                    ->label('Direquest Oleh')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //

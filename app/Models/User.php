@@ -57,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(JadwalSekolah::class, 'fasilitator_jadwal');
     }
+
+    public function jadwalRequests()
+    {
+        return $this->hasMany(JadwalSekolah::class, 'created_by');
+    }
 }

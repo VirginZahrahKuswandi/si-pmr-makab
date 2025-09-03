@@ -18,7 +18,10 @@ class JadwalSekolah extends Model
         'penanggungjawab',
         'kontak_pj',
         'pembina',
-        'kontak_pembina'
+        'kontak_pembina',
+        'status',
+        'catatan',
+        'created_by',
     ];
 
     public function sekolah()
@@ -34,5 +37,10 @@ class JadwalSekolah extends Model
     public function absensi()
     {
         return $this->hasMany(Absensi::class, 'jadwal_sekolah_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

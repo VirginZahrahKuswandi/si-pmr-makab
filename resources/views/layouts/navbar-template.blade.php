@@ -51,6 +51,11 @@
                                     <li>
                                         <a class="dropdown-item" href="/riwayat-mengajar">Riwayat Mengajar</a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="https://drive.google.com/drive/folders/1NaC7bXCG57qxZh3Ve_Nfu2p21QM_aC_5?usp=drive_link"
+                                            target="_blank">Data & Laporan</a>
+                                    </li>
                                     @if (auth()->user()->is_admin)
                                         <li>
                                             <a class="dropdown-item" href="/admin">Admin</a>
@@ -65,12 +70,20 @@
                                 </ul>
                             </li>
                             <!-- Mobile: show menu items directly -->
+
+
                             <li class="nav-item d-lg-none">
                                 <a class="nav-link" href="/profil">Profil</a>
                             </li>
                             <li class="nav-item d-lg-none">
                                 <a class="nav-link" href="/riwayat-mengajar">Riwayat Mengajar</a>
                             </li>
+                            <li class="nav-item d-lg-none">
+                                <a class="nav-link"
+                                    href="https://drive.google.com/drive/folders/1NaC7bXCG57qxZh3Ve_Nfu2p21QM_aC_5?usp=drive_link"
+                                    target="_blank">Data & Laporan</a>
+                            </li>
+
                             @if (auth()->user()->is_admin)
                                 <li class="nav-item d-lg-none">
                                     <a class="nav-link" href="/admin">Admin</a>

@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('pembina');
             $table->string('kontak_pembina');
             $table->timestamps();
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->string('catatan')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
 
             $table->foreign('sekolah_id')->references('id')->on('sekolah')->onUpdate('cascade')->onDelete('cascade');
         });

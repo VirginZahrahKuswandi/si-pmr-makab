@@ -4,40 +4,41 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Profil Pengguna</title>
-
     <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap"
         rel="stylesheet">
-
     <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('template/css/bootstrap-icons.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('template/css/magnific-popup.css') }}">
     <link href="{{ asset('template/css/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('template/css/templatemo-nomad-force.css') }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/22453fa8c0.js" crossorigin="anonymous"></script>
-
 </head>
 
 <body>
-
     <main>
         @include('layouts.navbar-template')
-
         <div class="container py-5">
             <h2>Profil Pengguna</h2>
-            <div class="card mt-4">
-                <div class="card-body">
-                    <p><strong>Nama:</strong> {{ $user->name }}</p>
-                    <p><strong>Email:</strong> {{ $user->email }}</p>
-                    <p><strong>Terdaftar sejak:</strong> {{ $user->created_at->translatedFormat('d F Y') }}</p>
+            <div class="row mt-4">
+                <div class="col-12 col-md-8 order-2 order-md-1">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <p><strong>Nama:</strong> {{ $user->name }}</p>
+                            <p><strong>Email:</strong> {{ $user->email }}</p>
+                            <p><strong>Terdaftar sejak:</strong> {{ $user->created_at->translatedFormat('d F Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="col-12 col-md-4 mb-3 mb-md-0 order-1 order-md-2 d-flex justify-content-center align-items-start">
+                    <img src="{{ asset('storage/' . $usersWithFasilitator->first()->fasilitator->foto) }}"
+                        alt="Foto Profil" class="img-fluid" style="max-width: 200px;">
                 </div>
             </div>
 
@@ -49,7 +50,8 @@
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-start flex-column flex-md-row">
                                 <div>
-                                    <a href="{{ route('artikel.show', $artikel->slug) }}">{{ $artikel->judul }}</a><br>
+                                    <a
+                                        href="{{ route('artikel.show', $artikel->slug) }}">{{ $artikel->judul }}</a><br>
                                     <small class="text-muted">Dipublikasikan:
                                         {{ \Carbon\Carbon::parse($artikel->published_at)->translatedFormat('d M Y') }}</small>
                                 </div>
@@ -69,13 +71,47 @@
                         @endforeach
                     </ul>
                 </div>
+
+                <div class="mt-5">
+                    <h4 class="section-title">Request Jadwal Anda</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sekolah</th>
+                                <th>Tanggal</th>
+                                <th>Jam</th>
+                                <th>Status</th>
+                                <th>Catatan Admin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($user->jadwalRequests as $req)
+                                <tr>
+                                    <td>{{ $req->sekolah->nama }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($req->tanggal)->translatedFormat('d M Y') }}</td>
+                                    <td>{{ $req->jam_mulai }} - {{ $req->jam_selesai }}</td>
+                                    <td>
+                                        <span
+                                            class="badge 
+                            @if ($req->status == 'pending') bg-secondary 
+                            @elseif($req->status == 'approved') bg-success 
+                            @else bg-danger @endif">
+                                            {{ ucfirst($req->status) }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $req->catatan ?? '-' }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
             @endif
+
 
         </div>
     </main>
-
     @include('layouts.footer-template')
-
     <!-- JAVASCRIPT FILES -->
     <script src="{{ asset('template/js/jquery.min.js') }}"></script>
     <script src="{{ asset('template/js/bootstrap.bundle.min.js') }}"></script>
@@ -85,7 +121,6 @@
     <script src="{{ asset('template/js/magnific-popup-options.js') }}"></script>
     <script src="{{ asset('template/js/scrollspy.min.js') }}"></script>
     <script src="{{ asset('template/js/custom.js') }}"></script>
-
 </body>
 
 </html>

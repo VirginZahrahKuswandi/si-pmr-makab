@@ -42,7 +42,8 @@ class FasilitatorResource extends Resource
                 Forms\Components\TextInput::make('tahun_bergabung_makab')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('tempat_lahir')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->required(),
                 Forms\Components\DatePicker::make('tanggal_lahir')
                     ->required(),
                 Forms\Components\TextInput::make('nomor_rekening_bank_dki')

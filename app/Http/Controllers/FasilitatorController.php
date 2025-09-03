@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Fasilitator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Artikel;
+use App\Models\User;
 
 class FasilitatorController extends Controller
 {
@@ -35,8 +35,14 @@ class FasilitatorController extends Controller
     public function profil()
     {
         $user = Auth::user();
+
         $artikels = Artikel::where('user_id', $user->id)->latest()->get();
 
-        return view('profil', compact('user', 'artikels'));
+        $usersWithFasilitator = User::where('id', $user->id)
+            ->whereNotNull('fasilitator_id')
+            ->with('fasilitator')
+            ->get();
+
+        return view('profil', compact('user', 'artikels', 'usersWithFasilitator'));
     }
 }
